@@ -19,6 +19,10 @@ app.use('/User',user_cart)
 app.use('/Admin',admin_product)
 app.use('/Admin/Product',admin_addproduct)
 
+
 app.listen(port,()=>{
-    console.log('Server runing on 3000')
+    console.log('Server runing on 3000');   
 })
+
+
+
