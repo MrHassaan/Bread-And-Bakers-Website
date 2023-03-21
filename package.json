@@ -4,12 +4,26 @@
   "description": "Project for web\r hello",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+=======
     "start": "node index.js"
+>>>>>>> 934370def3ebe3b25f3be3804398c37d6c8a9760
   },
   "dependencies": {
+<<<<<<< HEAD
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.2.0",
+    "sequelize": "^6.29.1"
+  }
+=======
     "express": "^4.18.2"
   },
   "keywords": [],
   "author": "",
   "license": "ISC"
+>>>>>>> 934370def3ebe3b25f3be3804398c37d6c8a9760
 }
