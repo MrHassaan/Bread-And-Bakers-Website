@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = 3000;
 const product_cake = require("./routes/product-cakerouter");
 const product_cupcake = require("./routes/product-cupcakerouter");
 const contact = require("./routes/contactrouter");
@@ -33,7 +33,7 @@ app.use("/Admin/Product", admin_product);
 app.use("/Admin/Product", admin_addproduct);
 app.use("/Admin/Product", admin_updateproduct);
 app.listen(port, () => {
-  console.log("Server runing on 8000");
+  console.log("Server runing on 3000");
 });
 
 

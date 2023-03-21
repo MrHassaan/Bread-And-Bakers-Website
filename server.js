@@ -4,8 +4,6 @@ const app = express();
 const db = require("./models/index");
 const categoryRoutes = require("./routes/category.router");
 const productRoutes = require("./routes/product.router");
-const cartRoutes = require("./routes/cart.router");
-const customerRoutes = require("./routes/customers.router");
 
 var corsOptions = {
   origin: "http://localhost:3000",
@@ -21,8 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
-app.use("/api/Cart", cartRoutes);
-app.use("/api/Customer", customerRoutes);
 
 db.sequelize
   .sync()
