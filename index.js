@@ -16,25 +16,6 @@ const admin_addproduct = require("./routes/admin-addproductrouter");
 const home = require("./routes/homerouter");
 const user_profile = require("./routes/user-profilerouter");
 const admin_updateproduct = require("./routes/admin-updateproductrouter");
-
-<<<<<<< HEAD
-app.use('/Products',product_cake)
-app.use('/Products',product_cupcake)
-app.use(contact)
-app.use(login)
-app.use('/User',user_recentorders)
-app.use('/User',user_cart)
-app.use('/Admin',admin_product)
-app.use('/Admin/Product',admin_addproduct)
-
-
-app.listen(port,()=>{
-    console.log('Server runing on 3000');   
-})
-
-
-
-=======
 app.use("/", home);
 app.use("/", home);
 app.use("/Products", product_cake);
@@ -54,4 +35,9 @@ app.use("/Admin/Product", admin_updateproduct);
 app.listen(port, () => {
   console.log("Server runing on 8000");
 });
->>>>>>> 934370def3ebe3b25f3be3804398c37d6c8a9760
+
+app.listen(port,()=>{
+    console.log('Server runing on 3000');   
+})
+
+
