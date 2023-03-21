@@ -36,8 +36,4 @@ app.listen(port, () => {
   console.log("Server runing on 8000");
 });
 
-app.listen(port,()=>{
-    console.log('Server runing on 3000');   
-})
-
 
