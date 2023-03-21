@@ -7,7 +7,11 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "sequelize": "^6.29.3",
+    "sql": "^0.78.0"
   },
   "keywords": [],
   "author": "",
