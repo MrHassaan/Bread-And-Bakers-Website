@@ -8,9 +8,8 @@ const orderRoutes = require("./routes/order.router");
 const DeliveryRoutes = require("./routes/Delivery.router");
 const cartRoutes = require("./routes/cart.router");
 const customerRoutes = require("./routes/customers.router");
-
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:8000",
 };
 
 app.use(cors(corsOptions));
@@ -43,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port http://127.0.01:${PORT} .`);
 });

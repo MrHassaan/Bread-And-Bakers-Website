@@ -23,4 +23,6 @@ db.category = require("./category.model.js")(sequelize, Sequelize);
 db.product =require("./product.model.js")(sequelize, Sequelize);
 db.order =require("./order.model.js")(sequelize, Sequelize);
 db.Delivery =require("./Delivery.model.js")(sequelize, Sequelize);
+db.cart =require("./cart.model.js")(sequelize, Sequelize);
+db.customers =require("./customers.model.js")(sequelize, Sequelize);
 module.exports = db;
