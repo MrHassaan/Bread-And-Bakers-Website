@@ -21,8 +21,7 @@ exports.create = (req, res) => {
   };
 
   // Save cart in the database
-  cart
-    .create(cart)
+  cart.create(cart)
     .then((data) => {
       res.send(data);
     })
