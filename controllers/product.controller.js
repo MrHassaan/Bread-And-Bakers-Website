@@ -31,15 +31,53 @@ exports.create = (req, res) => {
       });
     });
 };
+const getPagination = (page, size) => {
+  const limit = size ? +size : 2;
+  const offset = page ? page * limit : 0;
 
+  return { limit, offset };
+};
+const getPagingData = (data, page, limit) => {
+  const { count: totalItems, rows: products } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { totalItems, products, totalPages, currentPage };
+};
 // Retrieve all Product from the database.
 exports.findAll = (req, res) => {
-  const  p_name= req.query.p_name;
+  const { page, p_name } = req.query;
+  // const  p_name= req.query.p_name;
+  
   var condition = p_name? { p_name: { [Op.like]: `%${p_name}%` } } : null;
+  const size=2
+  const { limit, offset } = getPagination(page, size);
 
-  Product.findAll({ where: condition })
+  Product.findAndCountAll({ where: condition, limit, offset})
     .then((data) => {
-      res.send(data);
+      const response = getPagingData(data, page, limit);
+      res.send(response);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving products.",
+      });
+    });
+};
+
+exports.findByPrice = (req, res) => {
+  const { page, p_price } = req.query;
+  // const  p_name= req.query.p_name;
+  
+  var condition = p_price? { p_price: { [Op.eq] : parseInt(p_price)} }  : null;
+  const size=2
+  const { limit, offset } = getPagination(page, size);
+
+  Product.findAndCountAll({ where: condition, limit, offset})
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.send(response);
     })
     .catch((err) => {
       res.status(500).send({
@@ -126,7 +164,7 @@ exports.deleteAll = (req, res) => {
     where: {},
     truncate: false,
   })
-    .then((nums) => {
+    .then((nums) => { 
       res.send({ message: `${nums} Categories were deleted successfully!` });
     })
     .catch((err) => {

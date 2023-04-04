@@ -15,7 +15,7 @@ exports.create = (req, res) => {
   // Create a order
   const order = {
     p_name: req.body.p_name,
-    c_name: req.body.c_name,
+    cust_id: req.body.cust_id,
     p_price: req.body.p_price,
     p_quantity:req.body.p_quantity,
     total:req.body.total       
@@ -33,15 +33,34 @@ exports.create = (req, res) => {
       });
     });
 };
+const getPagination = (page, size) => {
+  const limit = size ? +size : 2;
+  const offset = page ? page * limit : 0;
+
+  return { limit, offset };
+};
+
+const getPagingData = (data, page, limit) => {
+  const { count: totalItems, rows: order } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { totalItems, order, totalPages, currentPage };
+};
 
 // Retrieve all order from the database.
 exports.findAll = (req, res) => {
-  const  p_name= req.query.p_name;
+  const { page, p_name } = req.query;
+  // const  p_name= req.query.p_name;
   var condition = p_name? { p_name: { [Op.like]: `%${p_name}%` } } : null;
+  const size=2
+  const { limit, offset } = getPagination(page, size);
 
-  order.findAll({ where: condition })
+
+  order.findAndCountAll({ where: condition , limit, offset})
     .then((data) => {
-      res.send(data);
+      const response = getPagingData(data, page, limit);
+      res.send(response);
     })
     .catch((err) => {
       res.status(500).send({

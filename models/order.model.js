@@ -3,8 +3,8 @@ module.exports = (sequelize, Sequelize) => {
       p_name: {
         type: Sequelize.STRING,
         },
-      c_name: {
-        type: Sequelize.STRING,
+      cust_id: {
+        type: Sequelize.INTEGER,
       },
       p_price: {
         type: Sequelize.INTEGER,

@@ -7,7 +7,7 @@ router.post("/", product.create);
 
 // Retrieve all Products
 router.get("/", product.findAll);
-
+router.get("/filter", product.findByPrice);
 // Retrieve a single Product with id
 router.get("/:id", product.findOne);
 

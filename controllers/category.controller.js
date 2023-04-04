@@ -29,15 +29,34 @@ exports.create = (req, res) => {
       });
     });
 };
+const getPagination = (page, size) => {
+  const limit = size ? +size : 2;
+  const offset = page ? page * limit : 0;
+
+  return { limit, offset };
+};
+
+const getPagingData = (data, page, limit) => {
+  const { count: totalItems, rows: categories } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { totalItems, categories, totalPages, currentPage };
+};
 
 // Retrieve all Category from the database.
 exports.findAll = (req, res) => {
-  const  c_name= req.query.c_name;
-  var condition = c_name? { c_name: { [Op.like]: `%${c_name}%` } } : null;
+  const { page, c_name } = req.query;
 
-  Category.findAll({ where: condition })
+  // const  c_name= req.query.c_name;
+  var condition = c_name? { c_name: { [Op.like]: `%${c_name}%` } } : null;
+  const size=2
+  const { limit, offset } = getPagination(page, size);
+
+  Category.findAndCountAll({ where: condition , limit, offset})
     .then((data) => {
-      res.send(data);
+      const response = getPagingData(data, page, limit);
+      res.send(response);
     })
     .catch((err) => {
       res.status(500).send({
