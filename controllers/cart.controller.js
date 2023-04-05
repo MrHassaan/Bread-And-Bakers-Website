@@ -139,3 +139,31 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+// Retrieve all cart from the database with pagination
+exports.findAll = (req, res) => {
+  const id = req.query.id;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+  const offset = req.query.offset ? parseInt(req.query.offset) : 0;
+  const condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
+
+  cart
+    .findAndCountAll({
+      where: condition,
+      limit: limit,
+      offset: offset,
+    })
+    .then((data) => {
+      const totalPages = Math.ceil(data.count / limit);
+      res.send({
+        totalItems: data.count,
+        totalPages: totalPages,
+        currentPage: offset > 0 ? Math.floor(offset / limit) + 1 : 1,
+        carts: data.rows,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving carts.",
+      });
+    });
+};

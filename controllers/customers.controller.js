@@ -34,13 +34,19 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all customer from the database.
 exports.findAll = (req, res) => {
   const id = req.query.id;
+  const limit = req.query.limit || 10;
+  const offset = req.query.offset || 0;
   var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
 
+  // Find all customers that match the condition
   customer
-    .findAll({ where: condition })
+    .findAll({ 
+      where: condition,
+      limit: limit,
+      offset: offset
+    })
     .then((data) => {
       res.send(data);
     })

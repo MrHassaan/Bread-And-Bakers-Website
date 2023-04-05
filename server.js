@@ -11,6 +11,11 @@ const customerRoutes = require("./routes/customers.router");
 var corsOptions = {
   origin: "http://localhost:8000",
 };
+process.on("uncaughtException", (err) => {
+  console.error(`Error: ${err.message}`);
+  console.error(`Shutting down due to uncaught exception: ${err.stack}`);
+  process.exit(1);
+});
 
 app.use(cors(corsOptions));
 
@@ -41,8 +46,36 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to CRUD Application!" });
 });
 
+// Handle 404 errors
+app.use((req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
+});
+
+// Handle Sequelize database errors
+app.use((err, req, res, next) => {
+  if (err instanceof db.Sequelize.ValidationError) {
+    // Handle validation errors
+    const errors = err.errors.map((e) => ({
+      field: e.path,
+      message: e.message,
+    }));
+    res.status(
+
+422).json({ errors });
+} else if (err instanceof db.Sequelize.DatabaseError) {
+// Handle database errors
+res.status(500).json({ error: "Internal Server Error" });
+} else {
+// Handle other errors
+console.error('Error: ${err.message}');
+res.status(500).json({ error: "Internal Server Error" });
+}
+});
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port http://127.0.01:${PORT} .`);
+console.log("Server is running on port http://127.0.01:${PORT} .");
 });

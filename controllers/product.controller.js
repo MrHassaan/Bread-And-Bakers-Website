@@ -6,10 +6,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.c_name) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
+    return res.status(400).json({ message: "Content can not be empty! 400" });
   }
 
   // Create a Product
@@ -22,21 +19,20 @@ exports.create = (req, res) => {
   // Save Product in the database
   Product.create(product)
     .then((data) => {
-      res.send(data);
+      return res.status(201).json(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Product.",
-      });
+      return res.status(500).json({ message: err.message || "Some error occurred while creating the Product." });
     });
 };
+
 const getPagination = (page, size) => {
   const limit = size ? +size : 2;
   const offset = page ? page * limit : 0;
 
   return { limit, offset };
 };
+
 const getPagingData = (data, page, limit) => {
   const { count: totalItems, rows: products } = data;
   const currentPage = page ? +page : 0;
@@ -44,6 +40,7 @@ const getPagingData = (data, page, limit) => {
 
   return { totalItems, products, totalPages, currentPage };
 };
+
 // Retrieve all Product from the database.
 exports.findAll = (req, res) => {
   const { page, p_name } = req.query;
@@ -56,13 +53,10 @@ exports.findAll = (req, res) => {
   Product.findAndCountAll({ where: condition, limit, offset})
     .then((data) => {
       const response = getPagingData(data, page, limit);
-      res.send(response);
+      return res.status(200).json(response);
     })
     .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving products.",
-      });
+      return res.status(500).json({ message: err.message || " 500 Some error occurred while retrieving products." });
     });
 };
 
@@ -77,13 +71,10 @@ exports.findByPrice = (req, res) => {
   Product.findAndCountAll({ where: condition, limit, offset})
     .then((data) => {
       const response = getPagingData(data, page, limit);
-      res.send(response);
+      return res.status(200).json(response);
     })
     .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving products.",
-      });
+      return res.status(500).json({ message: err.message || "500 Some error occurred while retrieving products." });
     });
 };
 
@@ -94,84 +85,76 @@ exports.findOne = (req, res) => {
   Product.findByPk(id)
     .then((data) => {
       if (data) {
-        res.send(data);
+        return res.status(200).json(data);
       } else {
-        res.status(404).send({
-          message: `Cannot find Product with id=${id}.`,
-        });
+        return res.status(404).json({ message: `404 Cannot find Product with id=${id}.` });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving Product with id=" + id,
-      });
+      return res.status(500).json({ message: "500 Error retrieving Product with id=" + id });
     });
 };
 
-// Update a Product by the id in the request
-exports.update = (req, res) => {
-  const id = req.params.id;
+// Update a Product by the id in the
 
-  Product.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Product was updated successfully.",
-        });
-      } else {
-        res.send({
-          message: `Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Product with id=" + id,
-      });
-    });
+exports.update = (req, res) => {
+const id = req.params.id;
+
+Product.update(req.body, {
+where: { id: id }
+})
+.then((num) => {
+if (num == 1) {
+return res.status(200).json({ message: "Product was updated successfully." });
+} else {
+return res.status(404).json({ message: "Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty! "});
+}
+})
+.catch((err) => {
+return res.status(500).json({ message: "Error updating Product with id=" + id });
+});
 };
 
 // Delete a Product with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.params.id;
+const id = req.params.id;
 
-  Product.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Product was deleted successfully!",
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Product with id=${id}. Maybe Product was not found!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Product with id=" + id,
-      });
-    });
+Product.destroy({
+where: { id: id }
+})
+.then((num) => {
+if (num == 1) {
+return res.status(200).json({ message: "Product was deleted successfully!" });
+} else {
+return res.status(404).json({ message: "Cannot delete Product with id=${id}. Maybe Product was not found! 404" });
+}
+})
+.catch((err) => {
+return res.status(500).json({ message: " 500 Could not delete Product with id=" + id });
+});
 };
 
 // Delete all Product from the database.
 exports.deleteAll = (req, res) => {
-  Product.destroy({
-    where: {},
-    truncate: false,
-  })
-    .then((nums) => { 
-      res.send({ message: `${nums} Categories were deleted successfully!` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all categories.",
-      });
-    });
+Product.destroy({
+where: {},
+truncate: false
+})
+.then((nums) => {
+return res.status(200).json({ message: "${nums} Products were deleted successfully! "});
+})
+.catch((err) => {
+return res.status(500).json({ message: err.message || "Some error occurred while removing all products. 500" });
+});
 };
 
+// Find all published Product
+exports.findAllPublished = (req, res) => {
+Product.findAll({ where: { published: true } })
+.then((data) => {
+return res.status(200).json(data);
+})
+.catch((err) => {
+return res.status(500).json({ message: err.message || "Some error occurred while retrieving products.500 " });
+});
+};
