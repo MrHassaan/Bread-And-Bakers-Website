@@ -12,8 +12,8 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Delivery
-  const Delivery = {
+  // Create a Delivery object
+  const newDelivery = {
     p_name: req.body.p_name,
     c_name: req.body.c_name,
     p_price: req.body.p_price,
@@ -21,8 +21,8 @@ exports.create = (req, res) => {
     total:req.body.total       
   };
 
-  // Save Delivery in the database
-  Delivery.create(Delivery)
+  // Save Delivery object in the database
+  Delivery.create(newDelivery)
     .then((data) => {
       res.send(data);
     })
@@ -86,56 +86,70 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot update Delivery with id=${id}. Maybe Delivery was not found or req.body is empty!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Delivery with id=" + id,
-      });
-    });
-};
-
-// Delete a Delivery with the specified id in the request
-exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  Delivery.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
+          message: `Cannot update Delivery with id=${id
+          }. Maybe Delivery was not found or req.body is empty!`,
+          });
+          }
+          })
+          .catch((err) => {
+          res.status(500).send({
+          message: "Error updating Delivery with id=" + id,
+          });
+          });
+          };
+          
+          // Delete a Delivery with the specified id in the request
+          exports.delete = (req, res) => {
+          const id = req.params.id;
+          
+          Delivery.destroy({
+          where: { id: id },
+          })
+          .then((num) => {
+          if (num == 1) {
+          res.send({
           message: "Delivery was deleted successfully!",
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Delivery with id=${id}. Maybe Delivery was not found!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Delivery with id=" + id,
-      });
-    });
-};
-
-// Delete all Delivery from the database.
-exports.deleteAll = (req, res) => {
-  Delivery.destroy({
-    where: {},
-    truncate: false,
-  })
-    .then((nums) => {
-      res.send({ message: `${nums} Categories were deleted successfully!` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all categories.",
-      });
-    });
-};
-
+          });
+          } else {
+          res.send({
+          message:' Cannot delete Delivery with id=${id}. Maybe Delivery was not found!',
+          });
+          }
+          })
+          .catch((err) => {
+          res.status(500).send({
+          message: "Could not delete Delivery with id=" + id,
+          });
+          });
+          };
+          
+          // Delete all Delivery from the database.
+          exports.deleteAll = (req, res) => {
+          Delivery.destroy({
+          where: {},
+          truncate: false,
+          })
+          .then((nums) => {
+          res.send({ message:' ${nums} Delivery were deleted successfully! '});
+          })
+          .catch((err) => {
+          res.status(500).send({
+          message:
+          err.message || "Some error occurred while removing all Delivery.",
+          });
+          });
+          };
+          
+          // Find all published Delivery
+          exports.findAllPublished = (req, res) => {
+          Delivery.findAll({ where: { published: true } })
+          .then((data) => {
+          res.send(data);
+          })
+          .catch((err) => {
+          res.status(500).send({
+          message:
+          err.message || "Some error occurred while retrieving Delivery.",
+          });
+          });
+          };

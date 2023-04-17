@@ -8,6 +8,7 @@ const orderRoutes = require("./routes/order.router");
 const DeliveryRoutes = require("./routes/Delivery.router");
 const cartRoutes = require("./routes/cart.router");
 const customerRoutes = require("./routes/customers.router");
+const moment = require('moment-timezone');
 var corsOptions = {
   origin: "http://localhost:8000",
 };
@@ -40,7 +41,27 @@ db.sequelize
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);
   });
-
+  app.get('/', (req, res) => {
+    const timezone = req.query.timezone || 'UTC';
+    if (!moment.tz.zone(timezone)) {
+      res.status(400).json({ error: 'Invalid timezone' });
+    } else {
+      const now = moment().tz(timezone);
+      const data = {
+        location: now.format('MMMM Do YYYY, h:mm:ss a z'),
+      };
+      res.json(data);
+    }
+  });
+  
+  app.use((req, res) => {
+    res.status(404).json({ error: 'Not found' });
+  });
+  
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal server error' });
+  });
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to CRUD Application!" });
