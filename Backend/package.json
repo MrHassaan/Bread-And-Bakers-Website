@@ -1,0 +1,26 @@
+{
+  "name": "webproject1",
+  "version": "1.0.0",
+  "description": "Project for web\r hello",
+  "main": "index.js",
+  "scripts": {
+    
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.2.0",
+    "node": "^19.8.1",
+    "sequelize": "^6.30.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
