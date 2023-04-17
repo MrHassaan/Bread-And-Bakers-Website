@@ -34,4 +34,4 @@ Muhammad Hassaan
 Contributions are welcome! If you find any issues or have suggestions for improvement, please create a pull request or open an issue.
 
 # License
-This project is licensed under the MIT License.
+none
