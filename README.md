@@ -28,9 +28,12 @@ Contact page to send a message to the bakery.
 
 # Contribution
 
-Muhammad Zohaib
-Hammad Afzal
-Muhammad Hassaan
+ Muhammad Zohaib
+
+ Hammad Afzal
+
+ Muhammad Hassaan
+
 Contributions are welcome! If you find any issues or have suggestions for improvement, please create a pull request or open an issue.
 
 # License
